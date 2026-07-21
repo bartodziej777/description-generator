@@ -1,15 +1,18 @@
-import { useState } from "react";
+import type { HeadingBlock } from "../App";
 
-export default function Heading() {
-  const [heading, setHeading] = useState<string>("");
+interface Props {
+  data: HeadingBlock["data"];
+  onChange: (newData: HeadingBlock["data"]) => void;
+}
 
+export default function Heading({ data, onChange }: Props) {
   return (
     <div>
-      <label htmlFor="heading">Heading:</label>
       <input
         type="text"
-        value={heading}
-        onChange={(e) => setHeading(e.target.value)}
+        placeholder="Wpisz treść nagłówka..."
+        value={data.text}
+        onChange={(e) => onChange({ text: e.target.value })}
       />
     </div>
   );

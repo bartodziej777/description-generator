@@ -1,15 +1,25 @@
-import { useState } from "react";
+import type { ProducentLogoBlock } from "../App";
 
-export default function ProducentLogo() {
-  const [src, setSrc] = useState<string>("");
-  const [alt, setAlt] = useState<string>("");
+interface Props {
+  data: ProducentLogoBlock["data"];
+  onChange: (newData: ProducentLogoBlock["data"]) => void;
+}
 
+export default function ProducentLogo({ data, onChange }: Props) {
   return (
     <div>
-      <label htmlFor="src">Logo:</label>
-      <input type="text" value={src} onChange={(e) => setSrc(e.target.value)} />
-      <label htmlFor="alt">Alt:</label>
-      <input type="text" value={alt} onChange={(e) => setAlt(e.target.value)} />
+      <input
+        type="text"
+        placeholder="Link do obrazka (src)..."
+        value={data.src}
+        onChange={(e) => onChange({ ...data, src: e.target.value })}
+      />
+      <input
+        type="text"
+        placeholder="Tekst alternatywny (alt)..."
+        value={data.alt}
+        onChange={(e) => onChange({ ...data, alt: e.target.value })}
+      />
     </div>
   );
 }
