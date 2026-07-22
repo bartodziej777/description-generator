@@ -5,10 +5,18 @@ import { generateBlockHTML } from "./components/templates.tsx";
 import "./App.css";
 import HeadingWithText from "./components/headingWithText.tsx";
 import HeadingWithFilm from "./components/headingWithFilm.tsx";
+import LeftTextRightImage from "./components/leftTextRightImage.tsx";
+import LeftImageRightText from "./components/leftImageRightText.tsx";
 
 interface BaseBlock {
   id: number;
-  type: "heading" | "producentLogo" | "headingWithText" | "headingWithFilm";
+  type:
+    | "heading"
+    | "producentLogo"
+    | "headingWithText"
+    | "headingWithFilm"
+    | "leftTextRightImage"
+    | "leftImageRightText";
 }
 
 export interface HeadingBlock extends BaseBlock {
@@ -42,16 +50,40 @@ export interface headingWithFilm extends BaseBlock {
   };
 }
 
+export interface leftTextRightImage extends BaseBlock {
+  type: "leftTextRightImage";
+  data: {
+    heading: string;
+    content: string;
+    src: string;
+    alt: string;
+  };
+}
+
+export interface leftImageRightText extends BaseBlock {
+  type: "leftImageRightText";
+  data: {
+    heading: string;
+    content: string;
+    src: string;
+    alt: string;
+  };
+}
+
 export type Block =
   | HeadingBlock
   | ProducentLogoBlock
   | headingWithText
-  | headingWithFilm;
+  | headingWithFilm
+  | leftTextRightImage
+  | leftImageRightText;
 const blocksNames: Block["type"][] = [
   "heading",
   "producentLogo",
   "headingWithText",
   "headingWithFilm",
+  "leftTextRightImage",
+  "leftImageRightText",
 ];
 
 function App() {
@@ -86,6 +118,20 @@ function App() {
           data: { heading: "", src: "" },
         };
         break;
+      case "leftTextRightImage":
+        newBlock = {
+          id,
+          type: "leftTextRightImage",
+          data: { heading: "", content: "", src: "", alt: "" },
+        };
+        break;
+      case "leftImageRightText":
+        newBlock = {
+          id,
+          type: "leftImageRightText",
+          data: { heading: "", content: "", src: "", alt: "" },
+        };
+        break;
 
       default:
         return;
@@ -100,7 +146,9 @@ function App() {
       | HeadingBlock["data"]
       | ProducentLogoBlock["data"]
       | headingWithText["data"]
-      | headingWithFilm["data"],
+      | headingWithFilm["data"]
+      | leftTextRightImage["data"]
+      | leftImageRightText["data"],
   ) => {
     setBlocks((prev) =>
       prev.map((block) =>
@@ -196,6 +244,18 @@ function App() {
                   )}
                   {block.type === "headingWithFilm" && (
                     <HeadingWithFilm
+                      data={block.data}
+                      onChange={(newData) => updateBlockData(block.id, newData)}
+                    />
+                  )}
+                  {block.type === "leftTextRightImage" && (
+                    <LeftTextRightImage
+                      data={block.data}
+                      onChange={(newData) => updateBlockData(block.id, newData)}
+                    />
+                  )}
+                  {block.type === "leftImageRightText" && (
+                    <LeftImageRightText
                       data={block.data}
                       onChange={(newData) => updateBlockData(block.id, newData)}
                     />

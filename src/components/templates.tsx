@@ -18,6 +18,61 @@ export const generateBlockHTML = (block: Block): string => {
             ${block.data.description || ""}
         </p>
     </div>`;
+    case "headingWithFilm":
+      return `<div class="productDesc__movie spacer">
+        <span class="productDesc__title">
+            ${block.data.heading || ""}
+        </span>
+
+        <div class="productDesc__movie--wrapper">
+            <iframe
+                width="100%"
+                height="150"
+                src="${block.data.src || ""}"
+                title="${block.data.heading || ""}
+                frameborder="0"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+            ></iframe>
+        </div>
+    </div>  `;
+    case "leftTextRightImage":
+      return `
+         <div class="productDesc__akryl spacer">
+         <div class="productDesc__akryl--desc">
+            <div class="productDesc__akryl--logo">
+                <span class="productDesc__title">${block.data.heading || ""}</span>
+            </div>
+
+            <p>
+                ${block.data.content || ""}
+            </p>
+        </div>
+        <img
+            src="${block.data.src || ""}"
+            alt="${block.data.alt || ""}"
+            loading="lazy"
+        />
+    </div>`;
+    case "leftImageRightText":
+      return `
+         <div class="productDesc__akryl spacer">
+         <img
+            src="${block.data.src || ""}"
+            alt="${block.data.alt || ""}"
+            loading="lazy"
+        />
+         <div class="productDesc__akryl--desc">
+            <div class="productDesc__akryl--logo">
+                <span class="productDesc__title">${block.data.heading || ""}</span>
+            </div>
+
+            <p>
+                ${block.data.content || ""}
+            </p>
+        </div>
+    </div>`;
     default:
       return "";
   }
