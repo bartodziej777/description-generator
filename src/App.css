@@ -1,0 +1,174 @@
+header,
+main,
+footer {
+  background: var(--code-bg);
+  width: 80%;
+  padding: 0 4rem;
+}
+
+header {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+header h1 {
+  font-family: var(--heading);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-h);
+  margin: 0;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+header h1 span {
+  color: var(--accent);
+}
+
+.top-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.top-menu button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  text-transform: lowercase;
+}
+
+.top-menu button::first-letter {
+  text-transform: uppercase;
+}
+
+.top-menu #load-template {
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+
+.top-menu select {
+  background: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+  padding: 0.42rem 1rem;
+  border-radius: 0.25rem 0 0 0.25rem;
+  cursor: pointer;
+}
+
+.block-wrapper {
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.block-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.block-actions button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  text-transform: lowercase;
+  margin-left: 0.5rem;
+}
+
+.block-actions button:last-of-type {
+  background-color: var(--btn-action3);
+}
+
+.block-actions button::first-letter {
+  text-transform: uppercase;
+}
+
+.block-actions button:disabled {
+  background: var(--btn-action2);
+  cursor: not-allowed;
+}
+
+.block-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.block-content input,
+.block-content textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  font-family: var(--sans);
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.add-block-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.add-block-section select {
+  background: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+  padding: 0.42rem 1rem;
+  border-radius: 0.25rem 0 0 0.25rem;
+  cursor: pointer;
+}
+
+.add-block-section button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0 0.25rem 0.25rem 0;
+  cursor: pointer;
+  text-transform: lowercase;
+}
+
+.generate-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.generate-section button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  text-transform: lowercase;
+}
+
+.generate-section button::first-letter {
+  text-transform: uppercase;
+}
+
+footer {
+  border-radius: 0 0 0.5rem 0.5rem;
+  text-align: center;
+}
+
+.editor-block {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}

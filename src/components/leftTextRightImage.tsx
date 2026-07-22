@@ -8,7 +8,6 @@ interface Props {
 export default function leftTextRightImage({ data, onChange }: Props) {
   return (
     <div>
-      <h1>leftTextRightImage</h1>
       <input
         type="text"
         placeholder="Wpisz treść nagłówka..."

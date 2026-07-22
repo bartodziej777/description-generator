@@ -191,16 +191,20 @@ function App() {
   return (
     <>
       <header>
-        <h1>Description generator for Presta</h1>
+        <h1>
+          Description generator for <span>PrestaShop</span>
+        </h1>
       </header>
       <main>
-        <section>
+        <section className="top-menu">
           <button>save as template</button>
-          <select>
-            <option value="template1">Template 1</option>
-            <option value="template2">Template 2</option>
-          </select>
-          <button>load template</button>
+          <div>
+            <select>
+              <option value="template1">Template 1</option>
+              <option value="template2">Template 2</option>
+            </select>
+            <button id="load-template">load template</button>
+          </div>
         </section>
 
         <section>
@@ -208,19 +212,24 @@ function App() {
             {blocks.map((block, index) => (
               <div key={block.id} className="block-wrapper">
                 <div className="block-actions">
-                  <button
-                    onClick={() => moveBlock(index, -1)}
-                    disabled={index === 0}
-                  >
-                    ▲ Wyżej
-                  </button>
-                  <button
-                    onClick={() => moveBlock(index, 1)}
-                    disabled={index === blocks.length - 1}
-                  >
-                    ▼ Niżej
-                  </button>
-                  <button onClick={() => removeBlock(block.id)}>✕ Usuń</button>
+                  <span>{block.type}</span>
+                  <div>
+                    <button
+                      onClick={() => moveBlock(index, -1)}
+                      disabled={index === 0}
+                    >
+                      ▲ Wyżej
+                    </button>
+                    <button
+                      onClick={() => moveBlock(index, 1)}
+                      disabled={index === blocks.length - 1}
+                    >
+                      ▼ Niżej
+                    </button>
+                    <button onClick={() => removeBlock(block.id)}>
+                      ✕ Usuń
+                    </button>
+                  </div>
                 </div>
 
                 <div className="block-content">
@@ -265,7 +274,7 @@ function App() {
             ))}
           </div>
 
-          <div>
+          <div className="add-block-section">
             <select
               id="block-select"
               value={selectedBlock}

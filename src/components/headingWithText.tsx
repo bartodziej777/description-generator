@@ -8,7 +8,6 @@ interface Props {
 export default function headingWithText({ data, onChange }: Props) {
   return (
     <div>
-      <h1>Heading with Text</h1>
       <input
         type="text"
         placeholder="Wpisz treść nagłówka..."

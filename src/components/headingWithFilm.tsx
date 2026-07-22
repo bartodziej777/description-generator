@@ -8,7 +8,6 @@ interface Props {
 export default function headingWithFilm({ data, onChange }: Props) {
   return (
     <div>
-      <h1>Heading with Film</h1>
       <input
         type="text"
         placeholder="Wpisz treść nagłówka..."

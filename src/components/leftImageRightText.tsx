@@ -8,7 +8,6 @@ interface Props {
 export default function leftImageRightText({ data, onChange }: Props) {
   return (
     <div>
-      <h1>leftImageRightText</h1>
       <input
         type="text"
         placeholder="Wpisz link do obrazu..."
