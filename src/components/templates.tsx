@@ -11,6 +11,13 @@ export const generateBlockHTML = (block: Block): string => {
                 alt="${block.data.alt || ""}"
             />
         </div>`;
+    case "headingWithText":
+      return `<div class="productDesc__intro--desc">
+        <h3>${block.data.heading || ""}</h3>
+        <p>
+            ${block.data.description || ""}
+        </p>
+    </div>`;
     default:
       return "";
   }

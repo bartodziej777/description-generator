@@ -8,6 +8,7 @@ interface Props {
 export default function ProducentLogo({ data, onChange }: Props) {
   return (
     <div>
+      <h1>Producent Logo</h1>
       <input
         type="text"
         placeholder="Link do obrazka (src)..."

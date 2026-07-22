@@ -3,10 +3,11 @@ import Heading from "./components/heading.tsx";
 import ProducentLogo from "./components/producentLogo.tsx";
 import { generateBlockHTML } from "./components/templates.tsx";
 import "./App.css";
+import HeadingWithText from "./components/headingWithText.tsx";
 
 interface BaseBlock {
   id: number;
-  type: "heading" | "producentLogo";
+  type: "heading" | "producentLogo" | "headingWithText";
 }
 
 export interface HeadingBlock extends BaseBlock {
@@ -24,8 +25,20 @@ export interface ProducentLogoBlock extends BaseBlock {
   };
 }
 
-export type Block = HeadingBlock | ProducentLogoBlock;
-const blocksNames: Block["type"][] = ["heading", "producentLogo"];
+export interface headingWithText extends BaseBlock {
+  type: "headingWithText";
+  data: {
+    heading: string;
+    description: string;
+  };
+}
+
+export type Block = HeadingBlock | ProducentLogoBlock | headingWithText;
+const blocksNames: Block["type"][] = [
+  "heading",
+  "producentLogo",
+  "headingWithText",
+];
 
 function App() {
   const [selectedBlock, setSelectedBlock] = useState<Block["type"]>("heading");
@@ -34,17 +47,38 @@ function App() {
 
   const addBlock = () => {
     const id = Date.now();
-    const newBlock: Block =
-      selectedBlock === "heading"
-        ? { id, type: "heading", data: { text: "" } }
-        : { id, type: "producentLogo", data: { src: "", alt: "" } };
+    let newBlock: Block;
+
+    switch (selectedBlock) {
+      case "heading":
+        newBlock = { id, type: "heading", data: { text: "" } };
+        break;
+
+      case "producentLogo":
+        newBlock = { id, type: "producentLogo", data: { src: "", alt: "" } };
+        break;
+
+      case "headingWithText":
+        newBlock = {
+          id,
+          type: "headingWithText",
+          data: { heading: "", description: "" },
+        };
+        break;
+
+      default:
+        return;
+    }
 
     setBlocks((prev) => [...prev, newBlock]);
   };
 
   const updateBlockData = (
     id: number,
-    newData: HeadingBlock["data"] | ProducentLogoBlock["data"],
+    newData:
+      | HeadingBlock["data"]
+      | ProducentLogoBlock["data"]
+      | headingWithText["data"],
   ) => {
     setBlocks((prev) =>
       prev.map((block) =>
@@ -128,6 +162,12 @@ function App() {
                   )}
                   {block.type === "producentLogo" && (
                     <ProducentLogo
+                      data={block.data}
+                      onChange={(newData) => updateBlockData(block.id, newData)}
+                    />
+                  )}
+                  {block.type === "headingWithText" && (
+                    <HeadingWithText
                       data={block.data}
                       onChange={(newData) => updateBlockData(block.id, newData)}
                     />
