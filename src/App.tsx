@@ -4,10 +4,11 @@ import ProducentLogo from "./components/producentLogo.tsx";
 import { generateBlockHTML } from "./components/templates.tsx";
 import "./App.css";
 import HeadingWithText from "./components/headingWithText.tsx";
+import HeadingWithFilm from "./components/headingWithFilm.tsx";
 
 interface BaseBlock {
   id: number;
-  type: "heading" | "producentLogo" | "headingWithText";
+  type: "heading" | "producentLogo" | "headingWithText" | "headingWithFilm";
 }
 
 export interface HeadingBlock extends BaseBlock {
@@ -33,11 +34,24 @@ export interface headingWithText extends BaseBlock {
   };
 }
 
-export type Block = HeadingBlock | ProducentLogoBlock | headingWithText;
+export interface headingWithFilm extends BaseBlock {
+  type: "headingWithFilm";
+  data: {
+    heading: string;
+    src: string;
+  };
+}
+
+export type Block =
+  | HeadingBlock
+  | ProducentLogoBlock
+  | headingWithText
+  | headingWithFilm;
 const blocksNames: Block["type"][] = [
   "heading",
   "producentLogo",
   "headingWithText",
+  "headingWithFilm",
 ];
 
 function App() {
@@ -65,6 +79,13 @@ function App() {
           data: { heading: "", description: "" },
         };
         break;
+      case "headingWithFilm":
+        newBlock = {
+          id,
+          type: "headingWithFilm",
+          data: { heading: "", src: "" },
+        };
+        break;
 
       default:
         return;
@@ -78,7 +99,8 @@ function App() {
     newData:
       | HeadingBlock["data"]
       | ProducentLogoBlock["data"]
-      | headingWithText["data"],
+      | headingWithText["data"]
+      | headingWithFilm["data"],
   ) => {
     setBlocks((prev) =>
       prev.map((block) =>
@@ -168,6 +190,12 @@ function App() {
                   )}
                   {block.type === "headingWithText" && (
                     <HeadingWithText
+                      data={block.data}
+                      onChange={(newData) => updateBlockData(block.id, newData)}
+                    />
+                  )}
+                  {block.type === "headingWithFilm" && (
+                    <HeadingWithFilm
                       data={block.data}
                       onChange={(newData) => updateBlockData(block.id, newData)}
                     />
