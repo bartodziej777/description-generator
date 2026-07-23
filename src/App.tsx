@@ -10,6 +10,18 @@ import LeftImageRightText from "./components/leftImageRightText.tsx";
 import Faq from "./components/faq.tsx";
 import Specs from "./components/specs.tsx";
 
+const setCookie = (name: string, value: string, days = 365) => {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Strict`;
+};
+
+const getCookie = (name: string): string | null => {
+  return document.cookie.split("; ").reduce((r, v) => {
+    const parts = v.split("=");
+    return parts[0] === name ? decodeURIComponent(parts[1]) : r;
+  }, "");
+};
+
 interface BaseBlock {
   id: number;
   type:
@@ -73,6 +85,7 @@ export interface leftImageRightText extends BaseBlock {
     alt: string;
   };
 }
+
 export interface faqItem {
   id: number;
   question: string;
@@ -112,6 +125,11 @@ export type Block =
   | faq
   | SpecsBlock;
 
+export interface Template {
+  name: string;
+  blockTypes: Block["type"][];
+}
+
 const blocksNames: Block["type"][] = [
   "heading",
   "producentLogo",
@@ -127,88 +145,67 @@ function App() {
   const [selectedBlock, setSelectedBlock] = useState<Block["type"]>("heading");
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [generatedHTML, setGeneratedHTML] = useState<string>("");
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState<boolean>(false);
+  const [isLoadModalOpen, setIsLoadModalOpen] = useState<boolean>(false);
 
-  const addBlock = () => {
-    const id = Date.now();
-    let newBlock: Block;
+  const [newTemplateName, setNewTemplateName] = useState<string>("");
+  const [selectedTemplateName, setSelectedTemplateName] = useState<string>("");
 
-    switch (selectedBlock) {
+  const [templates, setTemplates] = useState<Template[]>(() => {
+    const saved = getCookie("presta_templates");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const createEmptyBlock = (type: Block["type"], id: number): Block => {
+    switch (type) {
       case "heading":
-        newBlock = { id, type: "heading", data: { text: "" } };
-        break;
-
+        return { id, type, data: { text: "" } };
       case "producentLogo":
-        newBlock = { id, type: "producentLogo", data: { src: "", alt: "" } };
-        break;
-
+        return { id, type, data: { src: "", alt: "" } };
       case "headingWithText":
-        newBlock = {
-          id,
-          type: "headingWithText",
-          data: { heading: "", description: "" },
-        };
-        break;
+        return { id, type, data: { heading: "", description: "" } };
       case "headingWithFilm":
-        newBlock = {
-          id,
-          type: "headingWithFilm",
-          data: { heading: "", src: "" },
-        };
-        break;
+        return { id, type, data: { heading: "", src: "" } };
       case "leftTextRightImage":
-        newBlock = {
-          id,
-          type: "leftTextRightImage",
-          data: { heading: "", content: "", src: "", alt: "" },
-        };
-        break;
       case "leftImageRightText":
-        newBlock = {
+        return {
           id,
-          type: "leftImageRightText",
+          type,
           data: { heading: "", content: "", src: "", alt: "" },
         };
-        break;
       case "faq":
-        newBlock = {
+        return {
           id,
-          type: "faq",
+          type,
           data: {
             heading: "",
             items: [{ id: Date.now(), question: "", answer: "" }],
           },
         };
-        break;
       case "specsBlock":
-        newBlock = {
+        return {
           id,
-          type: "specsBlock",
+          type,
           data: {
             src: "",
             alt: "",
             rows: [{ id: Date.now(), label: "", value: "" }],
           },
         };
-        break;
       default:
-        return;
+        return { id, type: "heading", data: { text: "" } };
     }
+  };
 
+  const addBlock = () => {
+    const id = Date.now();
+    const newBlock = createEmptyBlock(selectedBlock, id);
     setBlocks((prev) => [...prev, newBlock]);
   };
 
-  const updateBlockData = (
-    id: number,
-    newData:
-      | HeadingBlock["data"]
-      | ProducentLogoBlock["data"]
-      | headingWithText["data"]
-      | headingWithFilm["data"]
-      | leftTextRightImage["data"]
-      | leftImageRightText["data"]
-      | faq["data"],
-  ) => {
+  const updateBlockData = (id: number, newData: Block["data"]) => {
     setBlocks((prev) =>
       prev.map((block) =>
         block.id === id ? ({ ...block, data: newData } as Block) : block,
@@ -230,6 +227,46 @@ function App() {
       updated.splice(targetIndex, 0, movedItem);
       return updated;
     });
+  };
+
+  const handleSaveTemplate = () => {
+    if (!newTemplateName.trim()) {
+      alert("Proszę podać nazwę szablonu!");
+      return;
+    }
+
+    const blockTypes = blocks.map((b) => b.type);
+    const newTemplate: Template = {
+      name: newTemplateName.trim(),
+      blockTypes,
+    };
+
+    const updatedTemplates = [
+      ...templates.filter((t) => t.name !== newTemplate.name),
+      newTemplate,
+    ];
+
+    setTemplates(updatedTemplates);
+    setCookie("presta_templates", JSON.stringify(updatedTemplates));
+
+    setNewTemplateName("");
+    setIsSaveModalOpen(false);
+    alert("Szablon został zapisany!");
+  };
+
+  const handleLoadTemplate = () => {
+    const template = templates.find((t) => t.name === selectedTemplateName);
+    if (!template) {
+      alert("Proszę wybrać szablon!");
+      return;
+    }
+
+    const loadedBlocks = template.blockTypes.map((type, index) =>
+      createEmptyBlock(type, Date.now() + index),
+    );
+
+    setBlocks(loadedBlocks);
+    setIsLoadModalOpen(false);
   };
 
   const handleGenerate = () => {
@@ -257,13 +294,31 @@ function App() {
       </header>
       <main>
         <section className="top-menu">
-          <button>save as template</button>
+          <button
+            onClick={() => setIsSaveModalOpen(true)}
+            disabled={blocks.length === 0}
+          >
+            save as template
+          </button>
           <div>
-            <select>
-              <option value="template1">Template 1</option>
-              <option value="template2">Template 2</option>
+            <select
+              value={selectedTemplateName}
+              onChange={(e) => setSelectedTemplateName(e.target.value)}
+            >
+              <option value="">Wybierz szablon...</option>
+              {templates.map((tpl) => (
+                <option key={tpl.name} value={tpl.name}>
+                  {tpl.name}
+                </option>
+              ))}
             </select>
-            <button id="load-template">load template</button>
+            <button
+              id="load-template"
+              onClick={handleLoadTemplate}
+              disabled={!selectedTemplateName}
+            >
+              load template
+            </button>
           </div>
         </section>
 
@@ -338,9 +393,7 @@ function App() {
                   {block.type === "specsBlock" && (
                     <Specs
                       data={block.data}
-                      onChange={(newData: SpecsBlock["data"]) =>
-                        updateBlockData(block.id, newData)
-                      }
+                      onChange={(newData) => updateBlockData(block.id, newData)}
                     />
                   )}
                 </div>
@@ -380,6 +433,31 @@ function App() {
               <div className="modal-actions">
                 <button onClick={copyHTMLToClipboard}>📋 Skopiuj kod</button>
                 <button onClick={() => setIsModalOpen(false)}>✕ Zamknij</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {isSaveModalOpen && (
+          <div
+            className="modal-overlay"
+            onClick={() => setIsSaveModalOpen(false)}
+          >
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <h2>Zapisz szablon</h2>
+              <p>Podaj nazwę dla aktualnego układu {blocks.length} bloków:</p>
+              <input
+                type="text"
+                placeholder="np. Szablon Baterii Umywalkowych"
+                value={newTemplateName}
+                onChange={(e) => setNewTemplateName(e.target.value)}
+                style={{ width: "100%", padding: "8px", margin: "10px 0" }}
+              />
+              <div className="modal-actions">
+                <button onClick={handleSaveTemplate}>Zapisz</button>
+                <button onClick={() => setIsSaveModalOpen(false)}>
+                  Anuluj
+                </button>
               </div>
             </div>
           </div>
