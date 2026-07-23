@@ -262,7 +262,20 @@ footer a:hover {
   transition: all 0.3s ease;
 }
 
-#btn-faq-next {
+#btn-specs-next {
+  background: var(--btn-action2);
+  color: #fff;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  text-transform: lowercase;
+  margin-left: 1rem;
+  transition: all 0.3s ease;
+}
+
+#btn-faq-next,
+#btn-specs-next {
   background-color: var(--accent);
   margin: 1rem 0;
 }

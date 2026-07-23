@@ -8,6 +8,7 @@ import HeadingWithFilm from "./components/headingWithFilm.tsx";
 import LeftTextRightImage from "./components/leftTextRightImage.tsx";
 import LeftImageRightText from "./components/leftImageRightText.tsx";
 import Faq from "./components/faq.tsx";
+import Specs from "./components/specs.tsx";
 
 interface BaseBlock {
   id: number;
@@ -18,7 +19,8 @@ interface BaseBlock {
     | "headingWithFilm"
     | "leftTextRightImage"
     | "leftImageRightText"
-    | "faq";
+    | "faq"
+    | "specsBlock";
 }
 
 export interface HeadingBlock extends BaseBlock {
@@ -85,6 +87,21 @@ export interface faq extends BaseBlock {
   };
 }
 
+export interface SpecRow {
+  id: number;
+  label: string;
+  value: string;
+}
+
+export interface SpecsBlock extends BaseBlock {
+  type: "specsBlock";
+  data: {
+    src: string;
+    alt: string;
+    rows: SpecRow[];
+  };
+}
+
 export type Block =
   | HeadingBlock
   | ProducentLogoBlock
@@ -92,7 +109,8 @@ export type Block =
   | headingWithFilm
   | leftTextRightImage
   | leftImageRightText
-  | faq;
+  | faq
+  | SpecsBlock;
 
 const blocksNames: Block["type"][] = [
   "heading",
@@ -102,6 +120,7 @@ const blocksNames: Block["type"][] = [
   "leftTextRightImage",
   "leftImageRightText",
   "faq",
+  "specsBlock",
 ];
 
 function App() {
@@ -158,6 +177,17 @@ function App() {
           data: {
             heading: "",
             items: [{ id: Date.now(), question: "", answer: "" }],
+          },
+        };
+        break;
+      case "specsBlock":
+        newBlock = {
+          id,
+          type: "specsBlock",
+          data: {
+            src: "",
+            alt: "",
+            rows: [{ id: Date.now(), label: "", value: "" }],
           },
         };
         break;
@@ -303,6 +333,14 @@ function App() {
                     <Faq
                       data={block.data}
                       onChange={(newData) => updateBlockData(block.id, newData)}
+                    />
+                  )}
+                  {block.type === "specsBlock" && (
+                    <Specs
+                      data={block.data}
+                      onChange={(newData: SpecsBlock["data"]) =>
+                        updateBlockData(block.id, newData)
+                      }
                     />
                   )}
                 </div>

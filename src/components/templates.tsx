@@ -100,6 +100,31 @@ export const generateBlockHTML = (block: Block): string => {
 ${itemsHTML}
     </div>`;
     }
+    case "specsBlock": {
+      const rowsHTML = block.data.rows
+        .map(
+          (row) => `                <tr>
+                    <th scope="row">${row.label}</th>
+                    <td>${row.value}</td>
+                </tr>`,
+        )
+        .join("\n");
+
+      return `    <div class="productDesc__specs--content">
+        <table class="productDesc__specs--table">
+            <tbody>
+${rowsHTML}
+            </tbody>
+        </table>
+
+        <img
+            src="${block.data.src}"
+            alt="${block.data.alt}"
+            loading="lazy"
+            style="margin-top: 1rem;"
+        />
+    </div>`;
+    }
     default:
       return "";
   }
