@@ -77,6 +77,7 @@ export type Block =
   | headingWithFilm
   | leftTextRightImage
   | leftImageRightText;
+
 const blocksNames: Block["type"][] = [
   "heading",
   "producentLogo",
@@ -90,6 +91,7 @@ function App() {
   const [selectedBlock, setSelectedBlock] = useState<Block["type"]>("heading");
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [generatedHTML, setGeneratedHTML] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const addBlock = () => {
     const id = Date.now();
@@ -180,6 +182,7 @@ function App() {
 
     const fullHTML = `<div class="productDesc">\n${innerContent}\n</div>`;
     setGeneratedHTML(fullHTML);
+    setIsModalOpen(true);
   };
 
   const copyHTMLToClipboard = () => {
@@ -294,18 +297,22 @@ function App() {
 
         <section className="generate-section">
           <button onClick={handleGenerate}>generate</button>
+        </section>
 
-          {generatedHTML && (
-            <div className="preview-container">
-              <div className="preview-actions">
-                <button onClick={copyHTMLToClipboard}>📋 Skopiuj kod</button>
-              </div>
+        {isModalOpen && (
+          <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <h2>Wygenerowany Kod HTML</h2>
               <pre>
                 <code>{generatedHTML}</code>
               </pre>
+              <div className="modal-actions">
+                <button onClick={copyHTMLToClipboard}>📋 Skopiuj kod</button>
+                <button onClick={() => setIsModalOpen(false)}>✕ Zamknij</button>
+              </div>
             </div>
-          )}
-        </section>
+          </div>
+        )}
       </main>
       <footer>
         <p>

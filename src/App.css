@@ -16,7 +16,7 @@ header h1 {
   font-weight: 600;
   color: var(--text-h);
   margin: 0;
-  padding: 1rem 0;
+  padding: 2rem 0 1rem;
   text-align: center;
 }
 
@@ -39,6 +39,11 @@ header h1 span {
   border-radius: 0.25rem;
   cursor: pointer;
   text-transform: lowercase;
+  transition: all 0.3s ease;
+}
+
+.top-menu button:hover {
+  background-color: var(--accent-border);
 }
 
 .top-menu button::first-letter {
@@ -72,7 +77,8 @@ header h1 span {
   margin-bottom: 1rem;
 }
 
-.block-actions button {
+.block-actions button,
+.modal-actions button {
   background: var(--accent);
   color: #fff;
   border: none;
@@ -81,6 +87,12 @@ header h1 span {
   cursor: pointer;
   text-transform: lowercase;
   margin-left: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.block-actions button:hover,
+.modal-actions button:hover {
+  background-color: var(--accent-border);
 }
 
 .block-actions button:last-of-type {
@@ -137,6 +149,11 @@ header h1 span {
   border-radius: 0 0.25rem 0.25rem 0;
   cursor: pointer;
   text-transform: lowercase;
+  transition: all 0.3s ease;
+}
+
+.add-block-section button:hover {
+  background-color: var(--accent-border);
 }
 
 .generate-section {
@@ -154,6 +171,11 @@ header h1 span {
   border-radius: 0.25rem;
   cursor: pointer;
   text-transform: lowercase;
+  transition: all 0.3s ease;
+}
+
+.generate-section button:hover {
+  background-color: var(--accent-border);
 }
 
 .generate-section button::first-letter {
@@ -165,10 +187,65 @@ footer {
   text-align: center;
 }
 
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
 .editor-block {
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   padding: 1rem;
   margin-bottom: 1rem;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: var(--bg);
+  padding: 24px;
+  border-radius: 8px;
+  max-width: 700px;
+  width: 90%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content pre {
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  padding: 16px;
+  border-radius: 6px;
+  overflow-x: auto;
+  max-height: 50vh;
+  text-align: left;
+}
+
+.modal-content h2 {
+  color: var(--text-h);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
 }
