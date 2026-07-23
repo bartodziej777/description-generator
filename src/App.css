@@ -249,3 +249,24 @@ footer a:hover {
   gap: 12px;
   margin-top: 16px;
 }
+
+.faq-editor button {
+  background: var(--btn-action2);
+  color: #fff;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  text-transform: lowercase;
+  margin-left: 1rem;
+  transition: all 0.3s ease;
+}
+
+#btn-faq-next {
+  background-color: var(--accent);
+  margin: 1rem 0;
+}
+
+.faq-question-header {
+  padding: 0.5rem 0;
+}

@@ -73,6 +73,33 @@ export const generateBlockHTML = (block: Block): string => {
             </p>
         </div>
     </div>`;
+    case "faq": {
+      const itemsHTML = block.data.items
+        .map(
+          (item) => `        
+        <div class="productDesc__faq--item">
+            <h3>
+                ${item.question}
+            </h3>
+
+            <div class="productDesc__faq--item--answer">
+                <p>
+                    ${item.answer.replace(/\n/g, "<br>")}
+                </p>
+            </div>
+        </div>
+        <!---->`,
+        )
+        .join("\n");
+
+      return `    <div class="productDesc__faq spacer">
+        <h2>
+            ${block.data.heading}
+        </h2>
+
+${itemsHTML}
+    </div>`;
+    }
     default:
       return "";
   }

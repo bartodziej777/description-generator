@@ -7,6 +7,7 @@ import HeadingWithText from "./components/headingWithText.tsx";
 import HeadingWithFilm from "./components/headingWithFilm.tsx";
 import LeftTextRightImage from "./components/leftTextRightImage.tsx";
 import LeftImageRightText from "./components/leftImageRightText.tsx";
+import Faq from "./components/faq.tsx";
 
 interface BaseBlock {
   id: number;
@@ -16,7 +17,8 @@ interface BaseBlock {
     | "headingWithText"
     | "headingWithFilm"
     | "leftTextRightImage"
-    | "leftImageRightText";
+    | "leftImageRightText"
+    | "faq";
 }
 
 export interface HeadingBlock extends BaseBlock {
@@ -69,6 +71,19 @@ export interface leftImageRightText extends BaseBlock {
     alt: string;
   };
 }
+export interface faqItem {
+  id: number;
+  question: string;
+  answer: string;
+}
+
+export interface faq extends BaseBlock {
+  type: "faq";
+  data: {
+    heading: string;
+    items: faqItem[];
+  };
+}
 
 export type Block =
   | HeadingBlock
@@ -76,7 +91,8 @@ export type Block =
   | headingWithText
   | headingWithFilm
   | leftTextRightImage
-  | leftImageRightText;
+  | leftImageRightText
+  | faq;
 
 const blocksNames: Block["type"][] = [
   "heading",
@@ -85,6 +101,7 @@ const blocksNames: Block["type"][] = [
   "headingWithFilm",
   "leftTextRightImage",
   "leftImageRightText",
+  "faq",
 ];
 
 function App() {
@@ -134,7 +151,16 @@ function App() {
           data: { heading: "", content: "", src: "", alt: "" },
         };
         break;
-
+      case "faq":
+        newBlock = {
+          id,
+          type: "faq",
+          data: {
+            heading: "",
+            items: [{ id: Date.now(), question: "", answer: "" }],
+          },
+        };
+        break;
       default:
         return;
     }
@@ -150,7 +176,8 @@ function App() {
       | headingWithText["data"]
       | headingWithFilm["data"]
       | leftTextRightImage["data"]
-      | leftImageRightText["data"],
+      | leftImageRightText["data"]
+      | faq["data"],
   ) => {
     setBlocks((prev) =>
       prev.map((block) =>
@@ -268,6 +295,12 @@ function App() {
                   )}
                   {block.type === "leftImageRightText" && (
                     <LeftImageRightText
+                      data={block.data}
+                      onChange={(newData) => updateBlockData(block.id, newData)}
+                    />
+                  )}
+                  {block.type === "faq" && (
+                    <Faq
                       data={block.data}
                       onChange={(newData) => updateBlockData(block.id, newData)}
                     />
