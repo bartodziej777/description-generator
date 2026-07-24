@@ -1,11 +1,11 @@
-import type { ImageWithListBlock, ListItem } from "../App";
+import type { ListItem, ListWithImageBlock } from "../App";
 
 interface Props {
-  data: ImageWithListBlock["data"];
-  onChange: (newData: ImageWithListBlock["data"]) => void;
+  data: ListWithImageBlock["data"];
+  onChange: (newData: ListWithImageBlock["data"]) => void;
 }
 
-export default function ImageWithList({ data, onChange }: Props) {
+export default function ListWithImage({ data, onChange }: Props) {
   const handleFieldChange = (field: "src" | "alt" | "title", value: string) => {
     onChange({ ...data, [field]: value });
   };

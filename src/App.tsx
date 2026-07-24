@@ -10,6 +10,7 @@ import LeftImageRightText from "./components/leftImageRightText.tsx";
 import Faq from "./components/faq.tsx";
 import Specs from "./components/specs.tsx";
 import ImageWithList from "./components/imageWithList.tsx";
+import ListWithImage from "./components/listWithImage.tsx";
 
 const setCookie = (name: string, value: string, days = 365) => {
   const expires = new Date(Date.now() + days * 864e5).toUTCString();
@@ -34,7 +35,8 @@ interface BaseBlock {
     | "leftImageRightText"
     | "faq"
     | "specsBlock"
-    | "imageWithList";
+    | "imageWithList"
+    | "listWithImage";
 }
 
 export interface HeadingBlock extends BaseBlock {
@@ -132,6 +134,16 @@ export interface ImageWithListBlock extends BaseBlock {
   };
 }
 
+export interface ListWithImageBlock extends BaseBlock {
+  type: "listWithImage";
+  data: {
+    src: string;
+    alt: string;
+    title: string;
+    items: ListItem[];
+  };
+}
+
 export type Block =
   | HeadingBlock
   | ProducentLogoBlock
@@ -141,7 +153,8 @@ export type Block =
   | leftImageRightText
   | faq
   | SpecsBlock
-  | ImageWithListBlock;
+  | ImageWithListBlock
+  | ListWithImageBlock;
 
 export interface Template {
   name: string;
@@ -158,6 +171,7 @@ const blocksNames: Block["type"][] = [
   "faq",
   "specsBlock",
   "imageWithList",
+  "listWithImage",
 ];
 
 function App() {
@@ -215,6 +229,17 @@ function App() {
           },
         };
       case "imageWithList":
+        return {
+          id,
+          type,
+          data: {
+            src: "",
+            alt: "",
+            title: "Zawartość zestawu",
+            items: [{ id: Date.now(), text: "" }],
+          },
+        };
+      case "listWithImage":
         return {
           id,
           type,
@@ -429,6 +454,12 @@ function App() {
                   )}
                   {block.type === "imageWithList" && (
                     <ImageWithList
+                      data={block.data}
+                      onChange={(newData) => updateBlockData(block.id, newData)}
+                    />
+                  )}
+                  {block.type === "listWithImage" && (
+                    <ListWithImage
                       data={block.data}
                       onChange={(newData) => updateBlockData(block.id, newData)}
                     />

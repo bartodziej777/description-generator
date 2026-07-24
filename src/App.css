@@ -263,7 +263,7 @@ footer a:hover {
 }
 
 #btn-specs-next,
-#btn-listing-next {
+.btn-listing-next {
   background: var(--btn-action2);
   color: #fff;
   border: none;
@@ -277,7 +277,7 @@ footer a:hover {
 
 #btn-faq-next,
 #btn-specs-next,
-#btn-listing-next {
+.btn-listing-next {
   background-color: var(--accent);
   margin: 1rem 0;
 }
