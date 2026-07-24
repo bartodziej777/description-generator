@@ -110,7 +110,9 @@ ${itemsHTML}
         )
         .join("\n");
 
-      return `    <div class="productDesc__specs--content">
+      return `    
+      <h2>${block.data.heading}</h2>
+      <div class="productDesc__specs--content">
         <table class="productDesc__specs--table">
             <tbody>
 ${rowsHTML}

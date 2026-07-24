@@ -109,6 +109,7 @@ export interface SpecRow {
 export interface SpecsBlock extends BaseBlock {
   type: "specsBlock";
   data: {
+    heading: string;
     src: string;
     alt: string;
     rows: SpecRow[];
@@ -148,7 +149,7 @@ function App() {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState<boolean>(false);
-  const [isLoadModalOpen, setIsLoadModalOpen] = useState<boolean>(false);
+  const [, setIsLoadModalOpen] = useState<boolean>(false);
 
   const [newTemplateName, setNewTemplateName] = useState<string>("");
   const [selectedTemplateName, setSelectedTemplateName] = useState<string>("");
@@ -189,6 +190,7 @@ function App() {
           id,
           type,
           data: {
+            heading: "",
             src: "",
             alt: "",
             rows: [{ id: Date.now(), label: "", value: "" }],
@@ -289,7 +291,7 @@ function App() {
     <>
       <header>
         <h1>
-          Description generator for <span>PrestaShop</span>
+          Generator opisów do <span>PrestaShop</span>
         </h1>
       </header>
       <main>
@@ -298,7 +300,7 @@ function App() {
             onClick={() => setIsSaveModalOpen(true)}
             disabled={blocks.length === 0}
           >
-            save as template
+            zapisz szablon
           </button>
           <div>
             <select
@@ -317,7 +319,7 @@ function App() {
               onClick={handleLoadTemplate}
               disabled={!selectedTemplateName}
             >
-              load template
+              wczytaj szablon
             </button>
           </div>
         </section>
@@ -415,12 +417,12 @@ function App() {
                 </option>
               ))}
             </select>
-            <button onClick={addBlock}>add block</button>
+            <button onClick={addBlock}>dodaj blok</button>
           </div>
         </section>
 
         <section className="generate-section">
-          <button onClick={handleGenerate}>generate</button>
+          <button onClick={handleGenerate}>wygeneruj</button>
         </section>
 
         {isModalOpen && (
@@ -465,7 +467,8 @@ function App() {
       </main>
       <footer>
         <p>
-          Created by <a href="https://github.com/bartodziej777">Bartłomiej</a>
+          Stworzone przez{" "}
+          <a href="https://github.com/bartodziej777">Bartłomiej</a>
         </p>
       </footer>
     </>

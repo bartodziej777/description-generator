@@ -6,7 +6,10 @@ interface Props {
 }
 
 export default function Specs({ data, onChange }: Props) {
-  const handleFieldChange = (field: "src" | "alt", value: string) => {
+  const handleFieldChange = (
+    field: "src" | "alt" | "heading",
+    value: string,
+  ) => {
     onChange({ ...data, [field]: value });
   };
 
@@ -37,6 +40,15 @@ export default function Specs({ data, onChange }: Props) {
 
   return (
     <div className="specs-editor">
+      <div className="form-group">
+        <label>Tekst nagłówka</label>
+        <input
+          type="text"
+          value={data.heading}
+          onChange={(e) => handleFieldChange("heading", e.target.value)}
+          placeholder="np. specyfikacja techniczna produktu xxx"
+        />
+      </div>
       <div className="form-group">
         <label>Link do zdjęcia / rysunku technicznego (src):</label>
         <input
