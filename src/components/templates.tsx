@@ -127,6 +127,29 @@ ${rowsHTML}
         />
     </div>`;
     }
+    case "imageWithList": {
+      const listItemsHTML = block.data.items
+        .map(
+          (item) => `                <li>
+                    ${item.text}
+                </li>`,
+        )
+        .join("\n");
+
+      return `    <div class="productDesc__accessories spacer">
+        <img
+            src="${block.data.src}"
+            alt="${block.data.alt}"
+            loading="lazy"
+        />
+        <div class="productDesc__accessories--desc">
+            <span class="productDesc__title">${block.data.title}</span>
+            <ul>
+${listItemsHTML}
+            </ul>
+        </div>
+    </div>`;
+    }
     default:
       return "";
   }
